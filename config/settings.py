@@ -45,6 +45,13 @@ INSTALLED_APPS = [
     # my_apps:
     "users",
     "habits",
+    # API:
+    "drf_yasg",
+    "rest_framework",
+    "django_filters",
+    "rest_framework_simplejwt",
+    "django_celery_beat",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -186,3 +193,13 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 TELEGRAM_URL = "https://api.telegram.org/bot"
 TG_BOT_TOKEN = os.getenv("TG_BOT_TOKEN")
+
+# CORS
+CORS_ALLOWED_ORIGINS = [
+    "https://read-only.example.com",
+    "https://read-and-write.example.com",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://read-and-write.example.com",
+]

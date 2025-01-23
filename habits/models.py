@@ -9,7 +9,13 @@ class Habits(models.Model):
     name = models.CharField(
         max_length=100, verbose_name="Название привычки", unique=True
     )
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="habits")
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="habits",
+        blank=True,
+        null=True,
+    )
     place = models.CharField(
         max_length=100,
         verbose_name="Место",
@@ -18,12 +24,14 @@ class Habits(models.Model):
     is_nice_habit = models.BooleanField(
         default=False, help_text="Это приятная привычка?"
     )
-    related_habit = models.CharField(
+    related_habit = models.ForeignKey(
+        "Habits",
         max_length=100,
         verbose_name="связанная привычка",
         help_text="Введите привычку с которой хотите связать текущую.",
         blank=True,
         null=True,
+        on_delete=models.CASCADE,
     )
     period = models.PositiveIntegerField(
         verbose_name="Частота напоминаний в днях",
@@ -38,9 +46,14 @@ class Habits(models.Model):
         blank=True,
         null=True,
     )
-    time_to_do = models.TimeField(
+    time_length = models.PositiveIntegerField(
         verbose_name="Время на выполнение привычки",
-        help_text="Введите примерное время для выполнения привычки",
+        help_text="Введите примерное время для выполнения привычки в минутах",
+        default=1,
+    )
+    time_to_do = models.TimeField(
+        verbose_name="Время начала привычки",
+        help_text="Введите время во сколько вы планируете начинать привычку",
     )
     is_public = models.BooleanField(
         default=False,

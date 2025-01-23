@@ -25,6 +25,9 @@ redis = "^5.2.1"
 django-celery-beat = "^2.7.0"
 shell = "^1.0.1"
 worker = "^2018.4.1"
+ipython = "^8.31.0"
+coreapi = "^2.3.3"
+pyyaml = "^6.0.2"
 
 
 [build-system]
