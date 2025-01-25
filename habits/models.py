@@ -60,3 +60,7 @@ class Habits(models.Model):
         verbose_name="Признак публичности",
         help_text="Могут ли эту привычку видеть другие пользователи?",
     )
+
+    last_remind = models.DateTimeField(
+        verbose_name="последнее напоминание", default="1900-01-01 12:00"
+    )

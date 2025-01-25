@@ -1,8 +1,7 @@
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet
+
 from habits.models import Habits
+from habits.paginators import HabitPaginator
 from habits.serializers import HabitSerializer
 from rest_framework.generics import (
     CreateAPIView,
@@ -12,7 +11,7 @@ from rest_framework.generics import (
     DestroyAPIView,
     get_object_or_404,
 )
-from django.shortcuts import render
+from users.permissions import IsOwnerPermission
 
 
 # Create your views here.
@@ -39,10 +38,29 @@ class HabitListApiView(ListAPIView):
 
     queryset = Habits.objects.all()
     serializer_class = HabitSerializer
+    pagination_class = HabitPaginator
+    permission_classes = (IsOwnerPermission, IsAuthenticated)
+
+    # def get_permissions(self):
+    #     self.permission_classes = (IsOwnerPermission, IsAuthenticated)
+    #     return super().get_permissions()
 
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset.filter(owner=self.request.user)
+
+
+class HabitPublicListView(ListAPIView):
+    """Возвращает список публичных привычек."""
+
+    queryset = Habits.objects.all()
+    serializer_class = HabitSerializer
+    pagination_class = HabitPaginator
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(is_public=True)
 
 
 class HabitRetrieveApiView(RetrieveAPIView):
@@ -50,6 +68,7 @@ class HabitRetrieveApiView(RetrieveAPIView):
 
     queryset = Habits.objects.all()
     serializer_class = HabitSerializer
+    permission_classes = (IsOwnerPermission, IsAuthenticated)
 
 
 class HabitUpdateApiView(UpdateAPIView):
@@ -57,6 +76,7 @@ class HabitUpdateApiView(UpdateAPIView):
 
     queryset = Habits.objects.all()
     serializer_class = HabitSerializer
+    permission_classes = (IsOwnerPermission, IsAuthenticated)
 
 
 class HabitDestroyApiView(DestroyAPIView):
@@ -64,3 +84,4 @@ class HabitDestroyApiView(DestroyAPIView):
 
     queryset = Habits.objects.all()
     serializer_class = HabitSerializer
+    permission_classes = (IsOwnerPermission, IsAuthenticated)

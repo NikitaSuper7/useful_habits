@@ -4,11 +4,13 @@ from habits.views import (
     HabitUpdateApiView,
     HabitRetrieveApiView,
     HabitDestroyApiView,
+    HabitPublicListView,
 )
 from habits.apps import HabitsConfig
 from django.urls import path
 
 app_name = HabitsConfig.name
+
 
 urlpatterns = [
     path("habits/", HabitListApiView.as_view(), name="habits_list"),
@@ -18,4 +20,5 @@ urlpatterns = [
     ),
     path("habits/<int:pk>/update/", HabitUpdateApiView.as_view(), name="habits_update"),
     path("habits/<int:pk>/", HabitRetrieveApiView.as_view(), name="habits_retrieve"),
+    path("habits/public/", HabitPublicListView.as_view(), name="habits_public"),
 ]

@@ -62,6 +62,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "habits.get_requests.RequestMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -152,7 +153,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 
@@ -174,9 +175,13 @@ CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 CELERY_BEAT_SCHEDULE = {
-    "check_last_login": {
-        "task": "materials.tasks.check_last_login",
+    "necessary_habits": {
+        "task": "habits.tasks.necessary_habits",
         "schedule": timedelta(days=1),  # run at every day
+    },
+    "send_tg_notification": {
+        "task": "habits.tasks.send_tg_notification",
+        "schedule": timedelta(minutes=1),  # run at every day
     },
 }
 
