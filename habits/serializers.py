@@ -19,7 +19,7 @@ class HabitSerializer(ModelSerializer):
     owner = SerializerMethodField()
     validators = [
         HabitRelatedOrRewardValidator(related="related_habit", reward="reward"),
-        HabitTimeValidator(time_to_do="time_length"),
+        HabitTimeValidator(time_length="time_length"),
         HabitRelatedValidator(related="related_habit"),
         HabitNiceValidator(
             related="related_habit", reward="reward", is_nice="is_nice_habit"

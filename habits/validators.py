@@ -21,11 +21,11 @@ class HabitRewardValidator:
 class HabitTimeValidator:
     """Проверяет, что время для выполнения привычки не превышает 120 секунд."""
 
-    def __init__(self, time_to_do):
-        self.time_to_do = time_to_do
+    def __init__(self, time_length):
+        self.time_length = time_length
 
     def __call__(self, value):
-        time_in_seconds = int(dict(value).get(self.time_to_do)) * 60
+        time_in_seconds = int(dict(value).get(self.time_length)) * 60
         if time_in_seconds > 120:
             raise ValidationError(
                 "Время для выполнения привычки не может превышать 120 секунд."
