@@ -11,7 +11,6 @@ from django.urls import path
 
 app_name = HabitsConfig.name
 
-
 urlpatterns = [
     path("habits/", HabitListApiView.as_view(), name="habits_list"),
     path("habits/create/", HabitCreateApiView.as_view(), name="habits_create"),

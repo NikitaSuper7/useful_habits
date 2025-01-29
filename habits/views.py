@@ -1,4 +1,4 @@
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated
 
 from habits.models import Habits
 from habits.paginators import HabitPaginator
@@ -9,7 +9,6 @@ from rest_framework.generics import (
     RetrieveAPIView,
     UpdateAPIView,
     DestroyAPIView,
-    get_object_or_404,
 )
 from users.permissions import IsOwnerPermission
 

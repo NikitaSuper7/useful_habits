@@ -1,5 +1,4 @@
 from rest_framework.serializers import ValidationError
-from habits.models import Habits
 
 
 class HabitRewardValidator:
@@ -14,7 +13,8 @@ class HabitRewardValidator:
         has_related = dict(value).get(self.related)
         if has_reward and has_related:
             raise ValidationError(
-                f"Одновременно указывать связанную привычку и вознаграждение нельзя. Выберите что-то одно"
+                """Одновременно указывать связанную привычку и вознаграждение нельзя.
+                Выберите что-то одно"""
             )
 
 
@@ -43,7 +43,7 @@ class HabitRelatedValidator:
         # related_habit = Habits.objects.get(pk=related_habit)
 
         if related_habit and related_habit.is_nice_habit is False:
-            raise ValidationError(f"Связанная привычка должна быть приятной.")
+            raise ValidationError("Связанная привычка должна быть приятной.")
 
 
 class HabitRelatedOrRewardValidator:
@@ -58,12 +58,14 @@ class HabitRelatedOrRewardValidator:
         has_reward = dict(value).get(self.reward)
         if has_related and has_reward:
             raise ValidationError(
-                f"Одновременно указывать связанную привычку и вознаграждение нельзя. Выберите что-то одно"
+                """Одновременно указывать связанную привычку и вознаграждение нельзя.
+                Выберите что-то одно"""
             )
 
 
 class HabitNiceValidator:
-    """Проверяет, что если привычка приятная, то у нее отсутствует связанная привычка и вознагрождение."""
+    """Проверяет, что если привычка приятная,
+    то у нее отсутствует связанная привычка и вознаграждение."""
 
     def __init__(self, related, reward, is_nice):
         self.related = related
@@ -77,7 +79,8 @@ class HabitNiceValidator:
 
         if is_nice and (has_reward or has_related):
             raise ValidationError(
-                f"Если привычка приятная, то у нее должно отсутствовать связанная привычка и вознаграждение."
+                """Если привычка приятная,
+                то у нее должно отсутствовать связанная привычка и вознаграждение."""
             )
 
 

@@ -1,6 +1,5 @@
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
-from config import settings
 from habits.models import Habits
 from habits.validators import (
     HabitRelatedOrRewardValidator,
