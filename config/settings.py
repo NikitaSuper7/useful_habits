@@ -25,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-6gm7*cf6f00s7s3@uub$hfj+uib#0xf@$7)ux9+3rz$*_3ngf7"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True if os.getenv("DEBUG") == "True" else False
 
 ALLOWED_HOSTS = []
 
@@ -45,6 +45,13 @@ INSTALLED_APPS = [
     # my_apps:
     "users",
     "habits",
+    # API:
+    "drf_yasg",
+    "rest_framework",
+    "django_filters",
+    "rest_framework_simplejwt",
+    "django_celery_beat",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -55,6 +62,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # "habits.get_requests.RequestMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -145,7 +153,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 
@@ -167,9 +175,13 @@ CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 CELERY_BEAT_SCHEDULE = {
-    "check_last_login": {
-        "task": "materials.tasks.check_last_login",
+    "necessary_habits": {
+        "task": "habits.tasks.necessary_habits",
         "schedule": timedelta(days=1),  # run at every day
+    },
+    "send_tg_notification": {
+        "task": "habits.tasks.send_tg_notification",
+        "schedule": timedelta(minutes=1),  # run at every day
     },
 }
 
@@ -186,3 +198,13 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 TELEGRAM_URL = "https://api.telegram.org/bot"
 TG_BOT_TOKEN = os.getenv("TG_BOT_TOKEN")
+
+# CORS
+CORS_ALLOWED_ORIGINS = [
+    "https://read-only.example.com",
+    "https://read-and-write.example.com",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://read-and-write.example.com",
+]
